@@ -1,7 +1,3 @@
-#
-# growler/middleware/cookieparser.py
-#
-#
 
 import json
 import logging
@@ -11,16 +7,6 @@ logger = logging.getLogger(__name__)
 
 
 class CookieParser:
-    """
-    Middleware which adds a 'cookies' attribute to requests, which is a
-    standard library http.cookies.SimpleCookie object, allowing dict like
-    access to session variables.
-
-    This adds a 'on_headerstrings' event to the response, so the cookies will
-    be serialized and sent back to the client.
-
-    If the request already has a cookie attribute, this does nothing.
-    """
 
     def __init__(self, **opts):
         """
@@ -37,19 +23,14 @@ class CookieParser:
         Parses cookies of the header request (using the 'cookie' header key)
         and adds a callback to the 'on_headerstrings' response event.
         """
-        # Do not clobber cookies
         if hasattr(req, 'cookies'):
             return
 
-        # Create an empty cookie state
         req.cookies, res.cookies = SimpleCookie(), SimpleCookie()
 
-        # If the request had a cookie, load it!
         req.cookies.load(req.headers.get('COOKIE', ''))
 
         def _gen_cookie():
-            if res.cookies:
-                cookie_string = res.cookies.output(header='', sep=res.EOL)
-                return cookie_string
+            pass
 
         res.headers['Set-Cookie'] = _gen_cookie

@@ -1,6 +1,3 @@
-#
-# growler/middleware/static.py
-#
 
 import re
 import logging
@@ -11,14 +8,6 @@ logger = logging.getLogger(__name__)
 
 
 class Static:
-    """
-    Static middleware catches any URI paths which match a filesystem
-    file and serves that file.
-
-    This middleware uses the HTTPResponse object's send_file method
-    to determine mime type.
-    At this time there is no way to change this without subclassing.
-    """
 
     INVALID_PATH = re.compile(r"(:?\.\.)")
 
@@ -36,7 +25,6 @@ class Static:
         self.log = logger.getChild("id=%x" % id(self))
         self.log.debug("Initialized with %r", path)
 
-        # if list, do a pathjoin
         if isinstance(path, Path):
             pass
         elif isinstance(path, str):
@@ -47,10 +35,8 @@ class Static:
             except TypeError:
                 raise TypeError("Unexpected type %r passed to Static middleware" % type(path))
 
-        # resolve path to avoid unexpected relative path redirection
         self.path = Path(path).resolve()
 
-        # ensure that path exists
         if not self.path.is_dir():
             self.log.error("Static middleware given non-directory path %r", self.path)
             err_msg = "Path '{}' is not a directory.".format(self.path)
@@ -67,8 +53,6 @@ class Static:
         """
         file_path = self.path / req.path[1:]
 
-        # ignore anything that tries to reference an invalid path, such as
-        # /../spam
         if any(map(self.INVALID_PATH.match, file_path.parts)):
             return
 
@@ -90,15 +74,4 @@ class Static:
 
     @staticmethod
     def calculate_etag(file_path):
-        """
-        Calculate an etag value
-
-        Args:
-            a_file (pathlib.Path): The filepath to the
-
-        Returns:
-            String of the etag value to be sent back in header
-        """
-        stat = file_path.stat()
-        etag = "%x-%x" % (stat.st_mtime_ns, stat.st_size)
-        return etag
+        pass

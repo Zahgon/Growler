@@ -1,8 +1,3 @@
-#
-# growler/middleware/logger.py
-#
-# flake8: noqa
-#
 
 import logging
 import asyncio
@@ -10,7 +5,6 @@ import asyncio
 
 class Logger:
 
-    # Not pep8 but much better!
     DEFAULT = '/033[30m'
     RED     = '/033[31m'
     GREEN   = '/033[32m'
@@ -22,22 +16,22 @@ class Logger:
 
     @classmethod
     def c(cls, color, msg):
-        return "%s%s%s" % (color, msg, cls.DEFAULT)
+        pass
 
     def __init__(self):
         pass
 
     def info(self, message):
-        logging.info(c(self.CYAN, "  info  ", message))
+        pass
 
     def warn(self, message):
-        logging.warn(c(self.YELLOW, "  WARNING  ", message))
+        pass
 
     def error(self, message):
-        logging.error("  ERROR  ", message)
+        pass
 
     def critical_error(self, message):
-        logging.error("  ERROR  ", message)
+        pass
 
     def __call__(self, req, res):
         logging.info("Connection from {}".format(req.ip))

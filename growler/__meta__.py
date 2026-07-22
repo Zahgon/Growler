@@ -1,7 +1,3 @@
-#
-# growler/__meta__.py
-#
-"""Project Metadata"""
 
 package = 'growler'
 project = 'Web framework using standard python asyncio'

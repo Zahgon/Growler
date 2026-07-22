@@ -1,9 +1,3 @@
-#
-# growler/http/errors.py
-#
-"""
-Custom Exception subclasses relating to specific http errors.
-"""
 
 import sys
 from urllib.error import HTTPError as UrllibHttpError
@@ -12,15 +6,6 @@ from growler.utils.metaclasses import ItemizedMeta
 
 
 class HTTPError(UrllibHttpError, metaclass=ItemizedMeta):
-    """
-    Generic HTTP Exception.
-
-    Must be constructed with a code number, may be given an optional phrase.
-    It is recommended to use one of the subclasses which is defined below.
-    A helper function exists to get the appropriate error from a code:
-        raise HTTPError.get_from_code(404)
-        raise HTTPErrorNotFound()
-    """
 
     _msg = None
     code = 0
@@ -36,40 +21,23 @@ class HTTPError(UrllibHttpError, metaclass=ItemizedMeta):
         self.traceback = sys.exc_info()[2]
 
     def PrintSysMessage(self, printraceback=True):
-        if self.sys_exception:
-            print(self.sys_exception)
-        if printraceback and self.traceback:
-            print(self.traceback)
+        pass
 
     @classmethod
     def get_from_code(cls, code):
-        """
-        A simple way of getting the Exception class of an http error from http
-        error code.
-        """
-        return cls.code_to_error.get(code)
+        pass
 
     @property
     def msg(self):
-        return self._msg or self.status.phrase
+        pass
 
     @msg.setter
     def msg(self, value):
-        self._msg = str(value)
+        pass
 
     @classmethod
     def _getitem_(cls, key):
-        if isinstance(key, int):
-            # key by code
-            err = cls.get_from_code(key)
-            if err is not None:
-                return err
-        elif isinstance(key, str):
-            # key by phrase
-            for error in cls.code_to_error.values():
-                if error.status.phrase == key:
-                    return error
-        raise HTTPErrorInvalidHttpError
+        pass
 
 
 class HTTPErrorBadRequest(HTTPError):
@@ -265,10 +233,8 @@ HTTPError.code_to_error = {
 }
 
 __all__ = [
-    # generic error
     'HTTPError',
 
-    #  -- 4XX errors
     'HTTPErrorBadRequest',
     'HTTPErrorUnauthorized',
     'HTTPErrorPaymentRequired',
@@ -295,7 +261,6 @@ __all__ = [
     'HTTPErrorTooManyRequests',
     'HTTPErrorRequestHeaderFieldsTooLarge',
 
-    #  -- 5XX errors
     'HTTPErrorInternalServerError',
     'HTTPErrorNotImplemented',
     'HTTPErrorBadGateway',
@@ -308,7 +273,6 @@ __all__ = [
     'HTTPErrorNotExtended',
     'HTTPErrorNetworkAuthenticationRequired',
 
-    # -- derived errors
     'HTTPErrorInvalidHeader',
     'HTTPErrorInvalidHttpError',
 ]

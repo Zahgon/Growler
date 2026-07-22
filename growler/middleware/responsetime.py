@@ -1,10 +1,3 @@
-#
-# growler/middleware/responsetime.py
-#
-"""
-Provides middleware which adds a header indicating how long the request took to
-process
-"""
 
 import time
 import logging
@@ -13,11 +6,6 @@ logger = logging.getLogger(__name__)
 
 
 class ResponseTime:
-    """
-    Middleware which saves the time when initially called, and sets an
-    'on_headers' event to get the time difference which can be logged or sent
-    to the client.
-    """
 
     UNIT_TO_FACTOR_MAP = {
         's': 1,
@@ -53,19 +41,9 @@ class ResponseTime:
         start_time = time.monotonic()
 
         def on_header_send():
-            # if header already exists, do NOT clobber it
-            if not self.clobber_header and self.header_name in res.headers:
-                return
-
-            dt = self.format_timediff(time.monotonic() - start_time)
-            val = "{}{}".format(dt, self.units) if self.suffix else dt
-            res.set(self.header_name, val)
-
-            if self.log:
-                self.log.info("-- timer %s", val)
+            pass
 
         res.events.on('before_headers', on_header_send)
 
     def format_timediff(self, td):
-        factor = self.UNIT_TO_FACTOR_MAP[self.units]
-        return str(round(factor * td, self.digits))
+        pass

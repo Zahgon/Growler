@@ -1,15 +1,9 @@
-#
-# growler/middleware/auth.py
-#
 import logging
 
 logger = logging.getLogger(__name__)
 
 
 class Auth:
-    """
-    Authentication middleware used to log users or validate services.
-    """
 
     def __init__(self):
         self.log = logger.getChild("id=%x" % id(self))
